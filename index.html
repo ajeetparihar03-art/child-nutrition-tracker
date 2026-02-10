@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Child Nutrition Tracker</title>
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 10px;
+  }
+  h2 { margin-bottom: 10px; }
+  .container { display: flex; gap: 10px; }
+  .left { width: 60%; }
+  .left button {
+    width: 95%;
+    padding: 12px;
+    margin: 6px 0;
+    font-size: 16px;
+  }
+  .reset { background: black; color: white; }
+  .right {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  .block {
+    width: 50px;
+    height: 10px;
+    margin: 6px 0;
+    color: white;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+  }
+</style>
+</head>
+
+<body>
+
+<h2>What my child ate today</h2>
+
+<div class="container">
+  <div class="left">
+    <button onclick="add('carb')">➕ Paratha (Carb)</button>
+    <button onclick="add('protein')">➕ Egg (Protein)</button>
+    <button onclick="add('calcium')">➕ Milk (Calcium)</button>
+    <button onclick="add('vitamin')">➕ Fruit (Vitamin)</button>
+    <button onclick="add('sugar',2)">➕ Cold Drink (Sugar)</button>
+    <button onclick="add('transfat',2)">➕ Chips (Trans-fat)</button>
+    <button onclick="add('water')">➕ Water</button>
+    <button class="reset" onclick="resetDay()">🔄 Reset Day</button>
+  </div>
+
+  <div class="right">
+    <div class="block carb">Carb</div>
+    <div class="block protein">Protein</div>
+    <div class="block calcium">Calcium</div>
+    <div class="block vitamin">Vitamin</div>
+    <div class="block sugar">Sugar</div>
+    <div class="block transfat">Trans-fat</div>
+    <div class="block water">Water</div>
+  </div>
+</div>
+
+<script>
+  let data = {
+    carb:0, protein:0, calcium:0, vitamin:0,
+    sugar:0, transfat:0, water:0
+  };
+
+  function add(type, value=1){
+    data[type] += value;
+    updateUI();
+  }
+
+  function resetDay(){
+    for(let k in data) data[k]=0;
+    updateUI();
+  }
+
+  function updateUI(){
+    for(let k in data){
+      let el = document.querySelector('.'+k);
+      let v = data[k];
+      el.style.height = (v === 0 ? 10 : v * 22) + "px";
+
+      if(k === "sugar"){
+        el.style.background = v <= 1 ? "green" : v === 2 ? "orange" : "red";
+      }
+      else if(k === "transfat"){
+        el.style.background = v === 0 ? "green" : v === 1 ? "orange" : "red";
+      }
+      else if(k === "water"){
+        el.style.background = "blue";
+      }
+      else{
+        el.style.background = v > 0 ? "green" : "grey";
+      }
+    }
+  }
+</script>
+
+</body>
+</html>
